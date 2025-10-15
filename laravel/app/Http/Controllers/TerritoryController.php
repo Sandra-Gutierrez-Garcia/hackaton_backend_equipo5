@@ -65,6 +65,7 @@ class TerritoryController extends Controller
     {
         try {
             $territory = TerritoryModel::find($id);
+            
             if (!$territory) {
                 return response()->json([
                     'success' => false,
