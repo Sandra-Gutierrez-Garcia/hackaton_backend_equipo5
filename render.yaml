@@ -1,0 +1,63 @@
+services:
+  - type: web
+    name: hackaton-backend-equipo5
+    env: php
+    plan: free
+    region: frankfurt
+    buildCommand: |
+      # Navegar al directorio Laravel
+      cd hackaton_backend_equipo5/laravel
+      
+      # Install dependencies (mínimas para hackaton)
+      composer install --optimize-autoloader --no-dev --no-scripts
+      
+      # Create database with proper permissions
+      mkdir -p database
+      touch database/database.sqlite
+      chmod 664 database/database.sqlite
+      
+      # Generate app key
+      php artisan key:generate --force
+      
+      # Cache for production (básico)
+      php artisan config:cache
+      php artisan route:cache
+      
+      # Database setup
+      php artisan migrate --force
+      php artisan db:seed --force
+      
+    startCommand: |
+      cd hackaton_backend_equipo5/laravel
+      
+      # Ensure database exists
+      mkdir -p database
+      touch database/database.sqlite
+      chmod 664 database/database.sqlite
+      
+      # Start server
+      php artisan serve --host=0.0.0.0 --port=$PORT
+      
+    envVars:
+      - key: APP_NAME
+        value: "Hackaton API"
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_KEY
+        generateValue: true
+      - key: APP_URL
+        value: https://hackaton-backend-equipo5.onrender.com
+      - key: LOG_LEVEL
+        value: error
+      - key: DB_CONNECTION
+        value: sqlite
+      - key: DB_DATABASE
+        value: /opt/render/project/src/hackaton_backend_equipo5/laravel/database/database.sqlite
+      - key: SESSION_DRIVER
+        value: file
+      - key: CACHE_DRIVER
+        value: file
+      - key: QUEUE_CONNECTION
+        value: sync
