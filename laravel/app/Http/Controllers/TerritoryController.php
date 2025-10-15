@@ -20,7 +20,7 @@ class TerritoryController extends Controller
             $territoryCount = TerritoryModel::count();
             
             return response()->json([
-                'status' => 'OK',
+                'success' => true,
                 'message' => 'API is running',
                 'database' => 'Connected (SQLite)',
                 'territories_count' => $territoryCount,
@@ -30,41 +30,13 @@ class TerritoryController extends Controller
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'ERROR',
+                'success' => false,
                 'message' => 'Database connection failed',
                 'error' => $e->getMessage(),
                 'timestamp' => now()->toISOString()
             ], 500);
         }
     }
-    /**
-     * GET /api/health - Health check endpoint for Render
-     */
-    /* public function health(): JsonResponse
-    {
-        try {
-            // Verificar conexión a base de datos
-            DB::connection()->getPdo();
-            $territoryCount = TerritoryModel::count();
-            
-            return response()->json([
-                'status' => 'OK',
-                'message' => 'API is running',
-                'database' => 'Connected (SQLite)',
-                'territories_count' => $territoryCount,
-                'timestamp' => now()->toISOString(),
-                'app_name' => config('app.name'),
-                'app_env' => config('app.env')
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'ERROR',
-                'message' => 'Database connection failed',
-                'error' => $e->getMessage(),
-                'timestamp' => now()->toISOString()
-            ], 500);
-        }
-    } */
 
     /**
      * GET /api/territories - Obtener todos los territorios
@@ -131,6 +103,35 @@ class TerritoryController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Error creating territory'
+            ], 500);
+        }
+    }
+
+    /**
+     * GET /api/territories/pollution_analysis - Análisis de contaminación
+     */
+    public function getPollutionAnalysis(): JsonResponse
+    {
+        try {
+            $territories = TerritoryModel::all();
+            
+            $analysis = [
+                'total_territories' => $territories->count(),
+                'average_pollution' => $territories->avg('pollution_level'),
+                'highest_pollution' => $territories->max('pollution_level'),
+                'lowest_pollution' => $territories->min('pollution_level'),
+                'territories_by_pollution' => $territories->sortByDesc('pollution_level')->values()
+            ];
+            
+            return response()->json([
+                'success' => true,
+                'data' => $analysis
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error generating pollution analysis',
+                'error' => $e->getMessage()
             ], 500);
         }
     }

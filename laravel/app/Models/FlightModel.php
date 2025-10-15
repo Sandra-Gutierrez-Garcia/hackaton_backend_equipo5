@@ -61,7 +61,23 @@ class FlightModel extends Model
     public static function findFlightById($id)
     {
         $flights = self::getAllFlights();
-        return $flights->where('id_vuelo', $id)->first();
+
+        // Primero intentar buscar por el código de vuelo 'id_vuelo' (p.ej. "IB3201")
+        $byCode = $flights->firstWhere('id_vuelo', (string) $id);
+        if ($byCode) {
+            return $byCode;
+        }
+
+        // Si nos pasan un índice numérico, soportamos la búsqueda por posición (1-based)
+        if (is_numeric($id)) {
+            $index = max(0, intval($id) - 1);
+            $values = $flights->values();
+            if ($values->count() > $index) {
+                return $values->get($index);
+            }
+        }
+
+        return null;
     }
     
     /**
