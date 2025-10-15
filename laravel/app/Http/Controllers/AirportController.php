@@ -9,6 +9,7 @@ use App\Models\AirportModel;
 class AirportController extends Controller
 {
     //
+
     public function index(): JsonResponse
     {
         try{
@@ -45,6 +46,7 @@ class AirportController extends Controller
                 'success' => false,
                 'message' => 'Error retrieving airport',
                 'error' => $e->getMessage(),
+
             ], 500);
         }
     }

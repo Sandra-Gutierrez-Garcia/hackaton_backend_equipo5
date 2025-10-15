@@ -5,6 +5,7 @@ use App\Http\Controllers\FlightController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TerritoryController;
+use App\Http\Controllers\AirportController;
 
 // Health check endpoint for Render
 Route::get('/health', [TerritoryController::class, 'health']);
@@ -31,3 +32,7 @@ Route::get('/flights/co2/airport/{id}', [FlightController::class, 'getCO2ByAirpo
 Route::get('/flights/co2/highest', [FlightController::class, 'getHighestCO2Flights']);
 Route::get('/flights/statistics', [FlightController::class, 'getStatistics']);
 
+// rutas AiportController
+
+Route::get('/airports', [AirportController::class, 'index']);
+Route::get('/airports/{id}', [AirportController::class, 'show']);
