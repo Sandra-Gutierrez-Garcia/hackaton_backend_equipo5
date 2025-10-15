@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\TerritoryFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -27,5 +28,9 @@ class TerritoryModel extends Model
     public function airport()
     {
         return $this->belongsTo(AirportModel::class, 'airport_id');
+    }
+
+     protected static function newFactory(){
+        return TerritoryFactory::new();
     }
 }
