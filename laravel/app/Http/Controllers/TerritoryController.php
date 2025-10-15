@@ -12,7 +12,7 @@ class TerritoryController extends Controller
     /**
      * GET /api/health - Health check endpoint for Render
      */
-    public function health(): JsonResponse
+    /* public function health(): JsonResponse
     {
         try {
             // Verificar conexión a base de datos
@@ -36,7 +36,7 @@ class TerritoryController extends Controller
                 'timestamp' => now()->toISOString()
             ], 500);
         }
-    }
+    } */
 
     /**
      * GET /api/territories - Obtener todos los territorios
@@ -58,9 +58,6 @@ class TerritoryController extends Controller
         }
     }
 
-    /**
-     * GET /api/territories/{id} - Obtener territorio específico
-     */
     public function show($id): JsonResponse
     {
         try {
@@ -85,9 +82,6 @@ class TerritoryController extends Controller
         }
     }
 
-    /**
-     * POST /api/territories - Crear nuevo territorio
-     */
     public function store(Request $request): JsonResponse
     {
         try {
@@ -112,4 +106,11 @@ class TerritoryController extends Controller
             ], 500);
         }
     }
+
+    /* public function getPollutionAnalysis(): JsonResponse{
+        try{
+            $territories = TerritoryModel::all();
+            
+        }
+    } */
 }
