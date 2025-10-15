@@ -15,7 +15,7 @@ class FlightModel extends Model
      */
     public static function getAllFlights()
     {
-        $jsonPath = base_path('flights.json');
+        $jsonPath = base_path(env('FLIGHTS_JSON_PATH', 'flights.json'));
         
         if (!file_exists($jsonPath)) {
             return collect([]);
@@ -30,7 +30,7 @@ class FlightModel extends Model
      */
     public static function getAllAirports()
     {
-        $jsonPath = base_path('flights.json');
+        $jsonPath = base_path(env('FLIGHTS_JSON_PATH', 'flights.json'));
         
         if (!file_exists($jsonPath)) {
             return collect([]);
@@ -45,7 +45,7 @@ class FlightModel extends Model
      */
     public static function getStatistics()
     {
-        $jsonPath = base_path('flights.json');
+        $jsonPath = base_path(env('FLIGHTS_JSON_PATH', 'flights.json'));
         
         if (!file_exists($jsonPath)) {
             return null;
