@@ -3,44 +3,50 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use App\Models\AirportModel;
 
 class AirportController extends Controller
 {
     //
-    public function index(){
+
+    public function index(): JsonResponse
+    {
         try{
+            $airport = AiportModel::getAllAirports();  
             return response()->json([
-                'message' => 'list of airports',
-                'data' => Airport::all()
+                'success' => true,
+                'data' => $airport,
+                'count' => $airport->count()
             ], 200);
-
-        } catch(\Exception $e){
+        } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Error retrieving airports',
-                'error' => $e->getMessage()
-            ], 500);
-        }
+                'success' => false,
+                'message'=>'Error retrieving airports',
+                'error' => $e->getMessage(),
+            ],500);
+          }
     }
-
-    public function show($id){
-
+    public function show($id): jsonResponse
+    {
         try{
-            $aiport = Aiport::find($id);
-            if(!$aiport){
+             $airport = AirportModel::getAirportById($id);
+             if(!$airport){
                 return response()->json([
-                    'message' => 'Airport not found',
+                    'success' => false,
+                    'message' => 'Airport not found'
                 ], 404);
-            }
-
+             }
+                return response()->json([
+                    'success' => true,
+                    'data' => $airport
+                ], 200);
+        } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Airport found',
-                'data' => $aiport
-            ],200);
+                'success' => false,
+                'message' => 'Error retrieving airport',
+                'error' => $e->getMessage(),
 
-        } catch(\Exception $e){
-            return response()->json([
-                'message' => 'Error retrieving airports',
-                'error' => $e->getMessage()
             ], 500);
         }
     }

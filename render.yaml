@@ -1,0 +1,47 @@
+services:
+  - type: web
+    name: hackaton-backend-equipo5
+    runtime: php
+    plan: free
+    region: frankfurt
+    branch: feature/territories
+    rootDir: hackaton_backend_equipo5/laravel
+    buildCommand: composer install --no-dev --optimize-autoloader --no-scripts && mkdir -p database && touch database/database.sqlite && chmod 664 database/database.sqlite && php artisan key:generate --force && php artisan config:cache && php artisan route:cache && php artisan migrate --force && php artisan db:seed --force
+    startCommand: php artisan serve --host=0.0.0.0 --port=$PORT
+    envVars:
+      - key: APP_NAME
+        value: "Hackaton Backend API"
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_KEY
+        sync: false
+      - key: APP_URL
+        value: https://hackaton-backend-equipo5.onrender.com
+      - key: LOG_CHANNEL
+        value: stack
+      - key: LOG_LEVEL
+        value: error
+      - key: DB_CONNECTION
+        value: sqlite
+      - key: DB_DATABASE
+        value: /opt/render/project/src/database/database.sqlite
+      - key: DB_FOREIGN_KEYS
+        value: true
+      - key: SESSION_DRIVER
+        value: file
+      - key: SESSION_LIFETIME
+        value: 120
+      - key: CACHE_DRIVER
+        value: file
+      - key: CACHE_STORE
+        value: file
+      - key: QUEUE_CONNECTION
+        value: sync
+      - key: BROADCAST_DRIVER
+        value: log
+      - key: FILESYSTEM_DISK
+        value: local
+      - key: MAIL_MAILER
+        value: log
