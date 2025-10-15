@@ -17,6 +17,7 @@ class PlaneController extends Controller{
             ], 200);
         } catch(Exception $e){
             return response()->json([
+                'success' => false,
                 'message' => 'Error retrieving planes',
                 'error' => $e->getMessage()
             ], 500);
@@ -29,18 +30,15 @@ class PlaneController extends Controller{
             return response()->json([
                 'success' => true,
                 'data' => $plane,
-            ]);
+            ], 200);
 
         } catch(Exception $e){
             return response()->json([
+                'success' => false,
                 'message' => 'Plane not found',
                 'error' => $e->getMessage()
             ], 404);
         }
-
-        return response()->json([
-            'message' => 'Details of plane ' . $id
-        ]);
     }
 
     public function store(Request $request){
@@ -48,18 +46,18 @@ class PlaneController extends Controller{
             $validated = $request->validate([
                 'model' => 'required|string|max:100',
                 'capacity' => 'required|integer|min:1',
-                'range' => 'required|integer|min:1',
-                'airport_id' => 'required|integer|exists:airports,id'
+                'range' => 'required|integer|min:1'
             ]);
 
-            $plane = Planemodel::create($validated);
+            $plane = PlaneModel::create($validated);
 
-            $request = response()->json([
+            return response()->json([
                 'success' => true,
                 'data' => $plane
             ], 201);
         } catch (Exception $e){
             return response()->json([
+                'success' => false,
                 'message' => 'Error creating plane',
                 'error' => $e->getMessage()
             ], 500);
