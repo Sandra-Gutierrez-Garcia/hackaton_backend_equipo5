@@ -2,10 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class AirportModel extends Model
 {
+    use HasFactory;
+
+    protected $table = 'airports';
+    
     protected $fillable = [
         'name',
         'territory_id',

@@ -2,27 +2,36 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class PlaneModel extends Model
 {
+    use HasFactory;
+
+    protected $table = 'planes';
+    
     protected $fillable = [
         'model',
-        'fuel_capacity',
+        'capacity',
+        'range_km',
+        'flight_type',
         'arrival_date',
         'departure_date',
-        'airport_id',
+        //'airport_id',
     ];
 
     protected $casts = [
-        'model' => 'string',
-        'fuel_capacity' => 'decimal:2',
+
+        'capacity' => 'integer',
+        'range_km' => 'integer',
+
         'arrival_date' => 'datetime',
         'departure_date' => 'datetime',
-        'airport_id' => 'integer'
+        //'airport_id' => 'integer'
     ];
 
     public function airport(){
-        return $this->belongsTo(AirportModel::class, 'airport_id');
+        return $this->belongsTo(PlaneModel::class);
     }
 }

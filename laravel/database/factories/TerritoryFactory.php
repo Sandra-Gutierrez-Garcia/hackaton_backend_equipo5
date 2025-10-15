@@ -20,10 +20,12 @@ class TerritoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->city(),
+            'name' => $this->faker->randomElement([
+                'Barcelona', 'Helsinki', 'Abu Dhabi'
+            ]),
             'citizens' => $this->faker->numberBetween(1000, 100000),
             'pollution_level' => $this->faker->randomFloat(2, 0, 100),
-            'airport_id' => null
+            'airport_id' => $this->faker->numberBetween(1, 3)
         ];
     }
 }
