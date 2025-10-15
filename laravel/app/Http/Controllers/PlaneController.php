@@ -79,7 +79,7 @@ class PlaneController extends Controller{
 
     public function calculateOnePlanePollution($id){
         $planes = PlaneModel::findOrFail($id);
-        $pollution = 0;
+        $fuelCapacityLiters = 
         $planes->each(function($plane) use (&$pollution){
             $pollution += ($plane->capacity * 0.07) * 2.5;
         });
